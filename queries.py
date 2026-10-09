@@ -1,3 +1,5 @@
+from dataclasses import dataclass
+
 import psycopg2
 from psycopg2 import sql
 import matplotlib.pyplot as plt
@@ -13,6 +15,7 @@ class BaseType(Enum):
     def __str__(self):
         return self.name
 
+@dataclass
 class Efficiency:
     model_name: str
     base_type: BaseType
@@ -22,6 +25,13 @@ class Efficiency:
     peak_memory: float
     initial_memory: float
     inference_time: float
+
+class Correlation:
+    model_name: str
+    base_type: BaseType
+    bertscore: float
+    bleu: float
+    chrf: float
 
 conn = psycopg2.connect("dbname=corn_party user=postgres password=password host=localhost")
 cur = conn.cursor()
@@ -153,12 +163,18 @@ def build_bleu_chart_for_general_base():
     
     plt.boxplot(
         x_axis,
-        labels=['MarianMT','NLLB','M2M'],
+        labels=['MarianMT', 'NLLB', 'M2M'],
         boxprops=dict(color='blue'),
         whiskerprops=dict(color='red'),
         capprops=dict(color='green'),
         medianprops=dict(color='orange'),
-        flierprops=dict(markerfacecolor='red', marker='o')
+        flierprops=dict(markerfacecolor='red', marker='o'),
+        showmeans=True,
+        meanprops=dict(
+            marker='D',
+            markerfacecolor='black',
+            markeredgecolor='black'
+        )
     )
     
     plt.title('Pontuação BLEU Textos Gerais')
@@ -170,16 +186,28 @@ def build_bleu_chart_for_specific_base():
     x_axis = []
     for model in models:
         x_axis.append(get_bleu_score(model,BaseType.SPECIFIC))
+
+    print(x_axis)
+    for x in x_axis:
+        print("mean ", x.mean())
     
     plt.boxplot(
         x_axis,
-        labels=['MarianMT','NLLB','M2M'],
+        labels=['MarianMT', 'NLLB', 'M2M'],
         boxprops=dict(color='blue'),
         whiskerprops=dict(color='red'),
         capprops=dict(color='green'),
         medianprops=dict(color='orange'),
-        flierprops=dict(markerfacecolor='red', marker='o')
+        flierprops=dict(markerfacecolor='red', marker='o'),
+        showmeans=True,
+        meanprops=dict(
+            marker='D',
+            markerfacecolor='black',
+            markeredgecolor='black'
+        )
     )
+
+
     
     plt.title('Pontuação BLEU Textos Específicos')
     plt.xlabel('Modelo')
@@ -192,14 +220,20 @@ def build_bertscore_chart_for_general_base():
         x_axis.append(get_bert_score_score(model,BaseType.GENERAL))
     
     plt.boxplot(
-        x_axis,
-        labels=['MarianMT','NLLB','M2M'],
-        boxprops=dict(color='blue'),
-        whiskerprops=dict(color='red'),
-        capprops=dict(color='green'),
-        medianprops=dict(color='orange'),
-        flierprops=dict(markerfacecolor='red', marker='o')
-    )
+            x_axis,
+            labels=['MarianMT', 'NLLB', 'M2M'],
+            boxprops=dict(color='blue'),
+            whiskerprops=dict(color='red'),
+            capprops=dict(color='green'),
+            medianprops=dict(color='orange'),
+            flierprops=dict(markerfacecolor='red', marker='o'),
+            showmeans=True,
+            meanprops=dict(
+                marker='D',
+                markerfacecolor='black',
+                markeredgecolor='black'
+            )
+        )
     
     plt.title('Pontuação BERTscore Textos Gerais')
     plt.xlabel('Modelo')
@@ -212,14 +246,20 @@ def build_bertscore_chart_for_specific_base():
         x_axis.append(get_bert_score_score(model,BaseType.SPECIFIC))
     
     plt.boxplot(
-        x_axis,
-        labels=['MarianMT','NLLB','M2M'],
-        boxprops=dict(color='blue'),
-        whiskerprops=dict(color='red'),
-        capprops=dict(color='green'),
-        medianprops=dict(color='orange'),
-        flierprops=dict(markerfacecolor='red', marker='o')
-    )
+            x_axis,
+            labels=['MarianMT', 'NLLB', 'M2M'],
+            boxprops=dict(color='blue'),
+            whiskerprops=dict(color='red'),
+            capprops=dict(color='green'),
+            medianprops=dict(color='orange'),
+            flierprops=dict(markerfacecolor='red', marker='o'),
+            showmeans=True,
+            meanprops=dict(
+                marker='D',
+                markerfacecolor='black',
+                markeredgecolor='black'
+            )
+        )
     
     plt.title('Pontuação BERTscore Textos Específicos')
     plt.xlabel('Modelo')
@@ -232,14 +272,20 @@ def build_chrf_chart_for_general_base():
         x_axis.append(get_chrf_score_score(model,BaseType.GENERAL))
     
     plt.boxplot(
-        x_axis,
-        labels=['MarianMT','NLLB','M2M'],
-        boxprops=dict(color='blue'),
-        whiskerprops=dict(color='red'),
-        capprops=dict(color='green'),
-        medianprops=dict(color='orange'),
-        flierprops=dict(markerfacecolor='red', marker='o')
-    )
+                x_axis,
+                labels=['MarianMT', 'NLLB', 'M2M'],
+                boxprops=dict(color='blue'),
+                whiskerprops=dict(color='red'),
+                capprops=dict(color='green'),
+                medianprops=dict(color='orange'),
+                flierprops=dict(markerfacecolor='red', marker='o'),
+                showmeans=True,
+                meanprops=dict(
+                    marker='D',
+                    markerfacecolor='black',
+                    markeredgecolor='black'
+                )
+            )
     
     plt.title('Pontuação chrf Textos Gerais')
     plt.xlabel('Modelo')
@@ -249,17 +295,26 @@ def build_chrf_chart_for_general_base():
 def build_chrf_chart_for_specific_base():
     x_axis = []
     for model in models:
-        x_axis.append(get_bert_score_score(model,BaseType.SPECIFIC))
+        x_axis.append(get_chrf_score_score(model,BaseType.SPECIFIC))
+
+    for x in x_axis:
+            print("mean ", x.mean())
     
     plt.boxplot(
-        x_axis,
-        labels=['MarianMT','NLLB','M2M'],
-        boxprops=dict(color='blue'),
-        whiskerprops=dict(color='red'),
-        capprops=dict(color='green'),
-        medianprops=dict(color='orange'),
-        flierprops=dict(markerfacecolor='red', marker='o')
-    )
+                x_axis,
+                labels=['MarianMT', 'NLLB', 'M2M'],
+                boxprops=dict(color='blue'),
+                whiskerprops=dict(color='red'),
+                capprops=dict(color='green'),
+                medianprops=dict(color='orange'),
+                flierprops=dict(markerfacecolor='red', marker='o'),
+                showmeans=True,
+                meanprops=dict(
+                    marker='D',
+                    markerfacecolor='black',
+                    markeredgecolor='black'
+                )
+            )
     
     plt.title('Pontuação chrf Textos Específicos')
     plt.xlabel('Modelo')
@@ -393,13 +448,11 @@ def build_peak_memory_usage_chart():
     general_base = []
 
     for model in models:
-        inference_time = get_peak_memory(model,BaseType.SPECIFIC)
-        inference_time.mean()
-        specific_base.append(inference_time.mean())
+        peak_memory = get_peak_memory(model,BaseType.SPECIFIC)
+        specific_base.append(peak_memory.mean())
 
-        inference_time = get_peak_memory(model,BaseType.GENERAL)
-        inference_time.mean()
-        general_base.append(inference_time.mean())
+        peak_memory = get_peak_memory(model,BaseType.GENERAL)
+        general_base.append(peak_memory.mean())
         
     models = ['MarianMT','NLLB','M2M']
     
@@ -415,14 +468,14 @@ def build_peak_memory_usage_chart():
         specific_base,
         width,
         label='Base específica',
-        color='#3b9eff',
+        color='#10b981',
     )
     ax.bar(
         x + width/2,
         general_base,
         width,
         label='Base geral',
-        color='#10b981',
+        color='#3b9eff',
     )
 
     plt.rcParams['font.family'] = 'sans-serif'
@@ -446,11 +499,9 @@ def build_inference_time_chart():
     
     for model in models:
         inference_time = get_inference_time(model,BaseType.SPECIFIC)
-        inference_time.mean()
         specific_base.append(inference_time.mean())
 
         inference_time = get_inference_time(model,BaseType.GENERAL)
-        inference_time.mean()
         general_base.append(inference_time.mean())
     
     models = ['MarianMT','NLLB','M2M']
@@ -467,14 +518,14 @@ def build_inference_time_chart():
         specific_base,
         width,
         label='Base específica',
-        color='#3b9eff',
+        color='#10b981',
     )
     ax.bar(
         x + width/2,
         general_base,
         width,
         label='Base geral',
-        color='#10b981',
+        color='#3b9eff',
     )
 
     plt.rcParams['font.family'] = 'sans-serif'
@@ -490,6 +541,43 @@ def build_inference_time_chart():
     plt.tight_layout()
     plt.show()
 
-build_peak_memory_usage_chart()
+
+def build_metrics_correlation_table(baseType: BaseType):
+    lines: list[Correlation] = []
+    for model in models:
+        bertscore = get_bert_score_score(model, baseType)
+        bleu = get_bleu_score(model, baseType)
+        chrf = get_chrf_score_score(model, baseType)
+
+        correlation = Correlation()
+        correlation.model_name = model
+        correlation.base_type = baseType
+        correlation.bertscore = bertscore.mean()
+        correlation.bleu = bleu.mean()
+        correlation.chrf = chrf.mean()
+        
+
+        lines.append(correlation)
+
+    headers = [
+    "Modelo", "Base", "bertscore", "bleu", 
+    "chrf"
+    ]
+
+    table_data = [
+    [
+        item.model_name,
+        str(item.base_type),
+        f"{item.bertscore:.3f}",
+        f"{item.bleu:.3f}",
+        f"{item.chrf:.3f}",
+    ]
+    for item in lines
+]
+    print(tabulate(table_data, headers=headers, tablefmt="fancy_grid"))
+
+#build_metrics_correlation_table(BaseType.GENERAL)
+build_metrics_correlation_table(BaseType.SPECIFIC)
+build_chrf_chart_for_specific_base()
 cur.close()
 conn.close()
