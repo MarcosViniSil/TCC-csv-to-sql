@@ -23,7 +23,7 @@ CREATE TABLE translation_open_subtitles (
 );
 
 -- Inserção dos dados do arquivo CSV
-INSERT INTO translation_comparison (sample_id, timestamp, source_lang, target_lang, original_sentence, original_translation, generated_translation, model_name, bleu, bertscore, chrf, cpu_average_usage, cpu_samples, cpu_max_usage, cpu_min_usage, additional_memory, initial_memory, final_memory, peak_memory, inference_time) VALUES
+INSERT INTO translation_open_subtitles (sample_id, timestamp, source_lang, target_lang, original_sentence, original_translation, generated_translation, model_name, bleu, bertscore, chrf, cpu_average_usage, cpu_samples, cpu_max_usage, cpu_min_usage, additional_memory, initial_memory, final_memory, peak_memory, inference_time) VALUES
 (110502281,'2026-09-24 19:33:12.844917','en','pt','Im all yours.','Sou todo seu.','Sou todo teu.','Helsinki-NLP/opus-mt-tc-big-en-pt',0.24,0.885,60.63,69.97,'153',100.0,0.0,1.37,748.46,1.71,2.1,12.67), 
 (110502281,'2026-09-24 19:33:27.775887','en','pt','Im all yours.','Sou todo seu.','Sou toda tua.','facebook/nllb-200-distilled-600M',0.114,0.832,41.65,29.57,'226',100.0,0.0,2.69,1.7,4.13,4.39,14.88), 
 (110502281,'2026-09-24 19:33:41.127648','en','pt','Im all yours.','Sou todo seu.','Eu sou tudo o seu.','facebook/m2m100_418M',0.054,0.852,38.39,34.89,'211',100.0,0.0,2.06,4.13,5.94,6.19,13.28), 

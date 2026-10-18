@@ -23,7 +23,7 @@ CREATE TABLE translation_php (
 );
 
 -- Inserção dos dados do arquivo CSV
-INSERT INTO translation_comparison (sample_id, timestamp, source_lang, target_lang, original_sentence, original_translation, generated_translation, model_name, bleu, bertscore, chrf, cpu_average_usage, cpu_samples, cpu_max_usage, cpu_min_usage, additional_memory, initial_memory, final_memory, peak_memory, inference_time) VALUES
+INSERT INTO translation_php (sample_id, timestamp, source_lang, target_lang, original_sentence, original_translation, generated_translation, model_name, bleu, bertscore, chrf, cpu_average_usage, cpu_samples, cpu_max_usage, cpu_min_usage, additional_memory, initial_memory, final_memory, peak_memory, inference_time) VALUES
 (32983,'2026-09-23 13:40:00.057416','en','pt','Use this extension at your own risk.','Esteja avisado. e use este módulo por sua própria conta e risco.','Use essa extensão por sua conta e risco.','Helsinki-NLP/opus-mt-tc-big-en-pt',0.105,0.823,37.9,74.87,'164',100.0,0.0,1.37,747.83,1.71,2.1,12.96), 
 (32983,'2026-09-23 13:40:16.125358','en','pt','Use this extension at your own risk.','Esteja avisado. e use este módulo por sua própria conta e risco.','Use esta extensão a seu próprio risco.','facebook/nllb-200-distilled-600M',0.016,0.772,26.34,32.09,'244',100.0,0.0,2.69,1.7,4.14,4.38,16.0), 
 (32983,'2026-09-23 13:40:57.146241','en','pt','Use this extension at your own risk.','Esteja avisado. e use este módulo por sua própria conta e risco.','Use esta extensão em seu próprio risco.','facebook/m2m100_418M',0.016,0.778,26.91,35.48,'228',100.0,0.0,2.06,4.14,5.95,6.2,41.0), 
